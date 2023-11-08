@@ -38,7 +38,7 @@ def get_stdout(cmd, verbose=False):
 
 # Define the pathe where all the combined files are
 # path = r'S:\Emmanuel_OcegueraConchas\Fragmentation\frag_and_land\*.tif'
-path = r"S:\Emmanuel_OcegueraConchas\fragmentation_estonia_test\frag_and_land\*.tif"
+path = r"S:\Emmanuel_OcegueraConchas\eu_fragmentation_forest\frag_land_combined\*.tif"
 
 # get the list of all the files
 files = glob(path)
@@ -47,7 +47,7 @@ files = glob(path)
 cmd = 'gdalinfo -stats %s'
 
 # Open a text file in writing modus. This file will be used to store the paths of the tif files that meet cetain criteria
-vrt_imgs = open(r'S:\Emmanuel_OcegueraConchas\fragmentation_estonia_test\valid_tiles.txt', 'w')
+vrt_imgs = open(r'S:\Emmanuel_OcegueraConchas\eu_fragmentation_forest\valid_tiles_combined.txt', 'w')
 
 for f in files:
     stats = get_stdout(cmd %f)
