@@ -11,8 +11,8 @@ work: create the vrt from the valid tiles that has been created in the step 4
 from osgeo import gdal
 
 # Define the paths
-input_txt_file = r"S:\Emmanuel_OcegueraConchas\fragmentation_estonia_test\valid_tiles.txt" # Replace with the path to your text file
-output_vrt_file = r"S:\Emmanuel_OcegueraConchas\fragmentation_estonia_test\valid_tiles.vrt"     # Replace with the desired VRT file path
+input_txt_file = r"S:\Emmanuel_OcegueraConchas\eu_fragmentation_forest\valid_tiles_test2.txt" # Replace with the path to your text file
+output_vrt_file = r"S:\Emmanuel_OcegueraConchas\eu_fragmentation_forest\valid_tiles_test2.vrt"     # Replace with the desired VRT file path
 
 # Read the list of image file paths from the text file
 with open(input_txt_file, "r") as file:
