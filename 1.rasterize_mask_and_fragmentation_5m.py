@@ -4,20 +4,13 @@ Created on Thu Oct 19 10:05:00 2023
 
 @author: no67wuwu
 
-work:
 This script is used to rasterize a shapefile that has been imported to a PostGIS database.
 It produces two output rasters: a mask and a fragmentation raster.
 
 """
 
-# Import necessary modules
-import sys
-sys.path.insert(0, r"I:\biocon\Emmanuel_Oceguera\projects\2023_03_NaturaConnect\tools")
-import MacPyver as mp
 
-
-
-# Import additional libraries
+# Import libraries
 import os
 import subprocess
 from multiprocessing import Pool
@@ -81,19 +74,27 @@ def main(sbbox):
     outname_frag = outpath_frag + '\\frag_tile_x{0}_y{1}_1.tif'.format(int(xmin/10000), int(ymin/10000))
     
     # Define GDAL command for fragmentation rasterization
-    cmd_frag = """gdal_rasterize -tr 5 5 -co "COMPRESS=DEFLATE" -burn 9 -ot Byte -te {0} {1} {2} {3} -a_srs EPSG:3035 \
-        -sql "select st_intersects(f.geom, st_geomfromtext('POLYGON (({0} {1}, {2} {1}, {2} {3}, {0} {3}, {0} {1}))', 3035)), \
+    cmd_frag = """gdal_rasterize -tr 5 5 -co "COMPRESS=DEFLATE" -burn 9 -ot Byte -te {0} {1} {2} {3} \
+        -sql "select st_intersection(f.geom, st_geomfromtext('POLYGON (({0} {1}, {2} {1}, {2} {3}, {0} {3}, {0} {1}))', 3035)), \
         f.frag_code, f.id from fragmentation.forest_clc2018_v2020_clip_ms f where \
         st_intersects(f.geom, st_geomfromtext('POLYGON (({0} {1}, {2} {1}, {2} {3}, {0} {3}, {0} {1}))', 3035)) \
         and f.frag_code = 999"\
         PG:"host=localhost user=postgres dbname=NaturaConnect-Connectivity password=07089452" {4}""".format(xmin, ymin, xmax, ymax, outname_frag)
     
     # Define GDAL command for mask rasterization
-    cmd_mask = """gdal_rasterize -tr 5 5 -co "COMPRESS=DEFLATE" -burn 1 -ot Byte -te {0} {1} {2} {3} -a_srs EPSG:3035\
+    cmd_mask = """gdal_rasterize -tr 5 5 -co "COMPRESS=DEFLATE" -burn 1 -ot Byte -te {0} {1} {2} {3} \
         -sql "select st_intersection(f.geom, st_geomfromtext('POLYGON (({0} {1}, {2} {1}, {2} {3}, {0} {3}, {0} {1}))',3035)), \
-        f.id from NUTS2021_V22_EU_MS.NUTS2021_v22_EU_MS_3035 f  where \
+        f.id from eu_ref_grif.eu_mask_single f where \
         st_intersects(f.geom, st_geomfromtext('POLYGON (({0} {1}, {2} {1}, {2} {3}, {0} {3}, {0} {1}))', 3035))" \
         PG:"host=localhost user=postgres dbname=NaturaConnect-Connectivity password=07089452" {4}""".format(xmin, ymin, xmax, ymax, outname_mask)
+    
+    # Print the SQL query for fragmentation rasterization
+    print("Fragmentation SQL Query:")
+    print(cmd_frag)
+
+    # Print the SQL query for mask rasterization
+    print("Mask SQL Query:")
+    print(cmd_mask)
     
     # Execute GDAL commands for rasterization
     execute_gdal_command(cmd_frag, "Fragmentation Rasterization")
@@ -101,7 +102,7 @@ def main(sbbox):
     
 
 # Define the path to the input shapefile and output paths for mask and fragmentation rasters
-inshape = r"I:\biocon\Emmanuel_Oceguera\projects\2023_09_Fragmentation\data\eu_reference_grid\europe_100km.shp"
+inshape = r"I:\biocon\Emmanuel_Oceguera\projects\2023_09_Fragmentation\data\eu_reference_grid\europe_100km.shp" # to get the extent
 outpath_frag = r"S:\Emmanuel_OcegueraConchas\eu_fragmentation_forest\frag_raster"
 outpath_mask  =  r"S:\Emmanuel_OcegueraConchas\eu_fragmentation_forest\land_raster"
 
@@ -136,22 +137,6 @@ if __name__ == "__main__":
         bar = 1
 
     
-
-
-#%%
-# gdal_rasterize [--help] [--help-general]
-#     [-b <band>]... [-i] [-at]
-#     [-oo <NAME>=<VALUE>]...
-#     {[-burn <value>]... | [-a <attribute_name>] | [-3d]} [-add]
-#     [-l <layername>]... [-where <expression>] [-sql <select_statement>|@<filename>]
-#     [-dialect <dialect>] [-of <format>] [-a_srs <srs_def>] [-to <NAME>=<VALUE>]...
-#     [-co <NAME>=<VALUE>]... [-a_nodata <value>] [-init <value>]...
-#     [-te <xmin> <ymin> <xmax> <ymax>] [-tr <xres> <yres>] [-tap] [-ts <width> <height>]
-#     [-ot {Byte/Int8/Int16/UInt16/UInt32/Int32/UInt64/Int64/Float32/Float64/
-#          CInt16/CInt32/CFloat32/CFloat64}] [-optim {AUTO|VECTOR|RASTER}] [-q]
-#     <src_datasource> <dst_filename>
-#%%
-
 
     
     
