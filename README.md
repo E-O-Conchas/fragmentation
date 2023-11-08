@@ -39,10 +39,7 @@ formulation in the context of forest conservation and connectivity. Specifically
 ### Notes:
 
 
-
 ### Source data:
-* filled soon
+
 
 ### Output data:
-* D:\rewilding\grass_frag_results\orig_area2
-* D:\rewilding\grass_frag_results\window_count2
