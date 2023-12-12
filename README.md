@@ -1,45 +1,65 @@
-# Workflow: forest fragmentation
-The forest fragmentation analysis, currently being conducted as a pilot project, holds the promise of setting a precedent 
-for future applications not only within individual member states but also on a larger European Union scale. 
-This initiative explores the feasibility and benefits of addressing forest fragmentation challenges, laying 
-the foundation for potential broader, EU-wide efforts to enhance forest conservation and connectivity.
+# Forest Fragmentation Analysis Workflow
 
+## Introduction
+This document outlines the comprehensive workflow for forest fragmentation analysis, incorporating various scripts and methodologies to process spatial data effectively.
 
-### Rationale:
-Forests are crucial ecosystems that provide a wide range of environmental, ecological, and economic benefits. 
-However, they are increasingly threatened by fragmentation, which occurs when large forested areas are divided 
-into smaller, isolated patches. Fragmentation can lead to habitat loss, biodiversity decline, and reduced 
-ecosystem services. Recognizing the importance of preserving and restoring forest connectivity, this analysis aims to:
+## Rationale
+The analysis is crucial to understand the impact of environmental changes on forest ecosystems, providing insights into the areas of fragmentation and potential conservation strategies.
 
-- Assess the extent and severity of forest fragmentation within specific regions or countries.
-- Identify key drivers and factors contributing to forest fragmentation.
-- Evaluate the impact of fragmentation on biodiversity, ecosystem health, and socio-economic aspects.
-- Provide valuable insights for policymakers, conservationists, and land managers to make informed decisions regarding forest management and conservation.
+## Goal
+To assess forest fragmentation by transforming spatial data into actionable insights through advanced geospatial analysis.
 
+## Workflow Steps
+	1. **Convert Shapefile to Raster Tiles (Resolution 5m per Pixel)**
+	   - Load shapefile to PostgreSQL.
+	   - Create raster tiles, mask, and fragmentation:
+		 - [Rasterize Fragmentation 5m Script](https://github.com/E-O-Conchas/fragmentation/blob/main/1.rasterize_mask_and_fragmentation_5m.py)
+	   
+	   - Combine mask and fragmentation:
+		 - [Combine Frag Mask Tiles Script](https://github.com/E-O-Conchas/fragmentation/blob/main/2.combine_mask_and_fragmentation_tiles_gdal.py)
+	   
+	   - Generate list of valid tiles:
+		 - [Get Valid Tiles Script](https://github.com/E-O-Conchas/fragmentation/blob/main/3.generate_list_valid_tiles.py)
+	   
+	   - Create VRT from valid tiles:
+		 - [Create VRT Script](https://github.com/E-O-Conchas/fragmentation/blob/main/4.create_vrt_from_valid_tiles.py)
+	   
 
-### Goal:
-The primary goal of the forest fragmentation analysis is to inform evidence-based decision-making and policy 
-formulation in the context of forest conservation and connectivity. Specifically, the goals include:
+	2. **Tile Raster Inside GRASS GIS, run Clumps analysis and Export**
+	   - Load VRT to GRASS GIS
+		 - [Import tiles to GRASS GIS](https://github.com/E-O-Conchas/fragmentation/blob/main/5.load_vrt_to_grass.py)
 
-- To develop a comprehensive understanding of the current state of forest fragmentation in the selected regions or countries.
-- To create a foundation for future research and conservation efforts aimed at mitigating the effects of forest fragmentation.
-- To raise awareness among stakeholders about the importance of maintaining and enhancing forest connectivity.
-- To contribute valuable data and insights that can guide sustainable land-use planning and forest management practices.
+	   - Run Clump Function on Full Raster
+		 - [Clumps Full Raster and Report in GRASS Script](https://github.com/E-O-Conchas/fragmentation/blob/main/6.clumps_full_raster_and_report_GRASS.py)
+	   
+	   - Tile Raster and Export Files in GRASS GIS
+	   - Before Export Tiles, create a Mask to export only forest polygons
+		 - [Create Tiles and Export Files in GRASS Script](https://github.com/E-O-Conchas/fragmentation/blob/main/7.create_tiles_and_export_files_GRASS.py)
 
+	3. **Delete Empty Tiles**
+	   - [Delete Empty Tiles Script](https://github.com/E-O-Conchas/fragmentation/blob/main/8.delete_empty_tiles.py)
 
-### Steps:
-1. convert shape file to raster tiles (resolution 5m per pixel)
-	1. load shape file to postgreSQL
-	
-	2. create raster tiles, mask and fragmentation using:
-	
-	3. combining mask and fragmentation with:
-		
+	4. **Aggregate Rasters to 1km Resolution**
+	   - [Aggregate Tiles 5m to 1k Script](https://github.com/E-O-Conchas/fragmentation/blob/main/9.tiles_to_1km_optimized.py)
 
-### Notes:
+	5. **Calculate Fragmentation Per Pixel with a Moving Window**
+	   - [Calculate Fragmentation Index Script](https://github.com/E-O-Conchas/fragmentation/blob/main/10.fragmentation_indicatior_cal.py)
 
+	6. **Create VRT from the results **
+	   - [Generate VRT file with the fragmentation results](https://github.com/E-O-Conchas/fragmentation/blob/main/11.convert_result_to_vrt.py)
 
-### Source data:
+## Source Data
+- need to be fill it
 
+## Output Data
+- Raster files indicating the fragmentation index and other metrics.
 
-### Output data:
+## Additional Notes
+- Ensure all software and libraries are correctly configured and installed.
+- Verify data integrity at each step.
+
+## Conclusion
+This workflow provides a structured and detailed approach for analyzing forest fragmentation, utilizing a suite of scripts for comprehensive analysis.
+
+## Author
+- need to be fill it
