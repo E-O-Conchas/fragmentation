@@ -10,7 +10,7 @@ input_vrt = "S:/Emmanuel_OcegueraConchas/eu_fragmentation_forest/valid_tiles_tes
 
 # Define the name of the output raster layer in GRASS GIS
 
-output_raster = "eu_forest_frag_test"
+output_raster = "test"
 
 
 

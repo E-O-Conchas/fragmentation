@@ -3,6 +3,7 @@
 Created on Mon Oct 23 16:05:56 2023
 
 @author: no67wuwu
+work: generate a list of a valid tiles from the combined tiles in the step 2
 """
 
 import os
@@ -31,14 +32,13 @@ def get_stdout(cmd, verbose=False):
             stdout.append(line)
         if verbose:
             print(line),
-        if line == '' and p.poll() != None: #p.poll is checking if the process is still running 
-                                            #is it is running it returns None
+        if line == '' and p.poll() != None: #p.poll is checking if the process is still running
             break
     return stdout
 
 # Define the pathe where all the combined files are
 # path = r'S:\Emmanuel_OcegueraConchas\Fragmentation\frag_and_land\*.tif'
-path = r"S:\Emmanuel_OcegueraConchas\eu_fragmentation_forest\frag_land_combined\*.tif"
+path = r"I:\biocon\Emmanuel_Oceguera\projects\2023_09_Fragmentation\estonia_forest_fragmentation\land_frag_combined\*.tif"
 
 # get the list of all the files
 files = glob(path)
@@ -47,7 +47,7 @@ files = glob(path)
 cmd = 'gdalinfo -stats %s'
 
 # Open a text file in writing modus. This file will be used to store the paths of the tif files that meet cetain criteria
-vrt_imgs = open(r'S:\Emmanuel_OcegueraConchas\eu_fragmentation_forest\valid_tiles_combined.txt', 'w')
+vrt_imgs = open(r'I:\biocon\Emmanuel_Oceguera\projects\2023_09_Fragmentation\estonia_forest_fragmentation\valid_tiles.txt', 'w')
 
 for f in files:
     stats = get_stdout(cmd %f)
