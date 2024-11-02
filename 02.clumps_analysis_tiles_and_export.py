@@ -75,6 +75,13 @@ try:
             print(f"Exporting {tile} to {output_file}")
             gscript.run_command('r.out.gdal', flags='c', input=tile, output=output_file, format='GTiff', nodata=0, type='Int32', overwrite=True, createopt="COMPRESS=DEFLATE")
         
+        # Create a flag file to indicate that the process was successful
+        ready_flag_path = os.path.join(output_path, 'READY.txt')
+        with open(ready_flag_path, 'w') as f:
+            f.write("Preprocessing complete. Folder is ready for fragmentation analysis.")
+        print(f"Ready flag created at {ready_flag_path}")
+
+
         # Remove the mask for the next iteration
         gscript.run_command('r.mask', flags='r')
 
