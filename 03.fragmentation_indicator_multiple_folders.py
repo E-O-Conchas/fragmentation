@@ -2,16 +2,11 @@
 """
 Created on Sat Nov 11 12:39:02 2023
 
-Author: no67wuwu
+@author: no67wuwu
 
-Work: This script performs fragmentation analysis using a moving window approach.
-        It calculates fragmentation indices based on the percentage of area 
-        covered by each fragment within a specified radius. The script processes 
-        multiple raster tiles, computes the fragmentation indices, and outputs 
-        the results as new raster files. The analysis is parallelized to improve 
-        performance and handles multiple fragmentation maps stored in different 
-        folders. The results are saved in specified output directories, and a log 
-        file is maintained to track the progress of the analysis.
+Description: This script performs fragmentation analysis on urban raster tiles.
+             It calculates fragmentation indices based on the percentage of area 
+             covered by each fragment and outputs the results as raster files.
 """
 import time
 import os
@@ -30,8 +25,7 @@ def frag_ind(s, sur_radius):
     
     Parameters:
     s (iterable): List of cell counts or areas.
-    sur_radius (int): Radius for surrounding cells.
-
+    
     Returns:
     float: Fragmentation index as a percentage.
     """
@@ -131,7 +125,6 @@ def get_tiles(tile, tiles):
     
     Parameters:
     tile (str): Path to the central tile.
-    tiles (list): List of paths to all tiles.
     
     Returns:
     numpy array: Combined array of the central tile and its surroundings.
@@ -145,13 +138,13 @@ def get_tiles(tile, tiles):
     
     # Extract the base name pattern based on the folder
     if "bfragmap_tiles_clumps_EUNIS" in folder_name:
-        base_name = "T1B_bfragmap_clump"
+        base_name = "T1B_2000_bfragmap_clump"
         print(base_name)
     elif "bfragmap1_tiles_clumps_EUNIS" in folder_name:
-        base_name = "T1B_bfragmap1_clump"
+        base_name = "T1B_2000_bfragmap1_clump"
         print(base_name)
     elif "bfragmap2_tiles_clumps_EUNIS" in folder_name:
-        base_name = "T1B_bfragmap2_clump"
+        base_name = "T1B_2000_bfragmap2_clump"
         print(base_name)
     else:
         raise ValueError("Unknown folder name pattern.")
@@ -166,6 +159,13 @@ def get_tiles(tile, tiles):
     sur_tiles = [f"{base_name}-{y:03d}-{x:03d}.tif"
                   for y in range(y_top, y_bot + 1)  
                   for x in range(x_left, x_right + 1)]
+   
+    
+    # # Generate list of surrounding tiles
+    # sur_tiles = [f'{base_name}-{"000" + str(y)[-3:]}-{"000" + str(x)[-3:]}.tif'
+    #               for y in range(y_top, y_bot + 1)  
+    #               for x in range(x_left, x_right + 1)]
+    
     
     # sur_tiles = [f'base_name-{}-{}.tif'.format(('000' + str(y))[-3:], ('000' + str(x))[-3:]) # Always change the name of tiles
     #               for y in range(y_top, y_bot + 1)  
@@ -224,12 +224,6 @@ def bbox(x, y, sur_radius):
 
 # Function to create directories if they don't exist
 def ensure_dir(directory):
-    """
-    Ensure a directory exists by creating it if it does not.
-
-    Parameters:
-    directory (str): Path to the directory.
-    """
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -247,7 +241,7 @@ def main(args):
     str: Confirmation message.
     """
     raster = get_tiles(tile, tiles)
-    print(f"Unique values in raster for tile {tile}: {np.unique(raster)}")
+    #print(f"Unique values in raster for tile {tile}: {np.unique(raster)}")
     orig_raster = read_tif(tile)
     out_count_area = np.zeros(orig_raster.shape)
     out_orig_area = np.zeros(orig_raster.shape)
@@ -292,6 +286,20 @@ def main(args):
     
     return 'tile: {} written'.format(tile.split(os.sep)[-1])
 
+# Function to check if the folder is ready
+def is_folder_ready_for_processing(folder_path):
+    """
+    Check if the folder has a 'READY.txt' flag file indicating that it is ready for processing.
+    
+    Parameters:
+    folder_path (str): Path to the folder to check.
+    
+    Returns:
+    bool: True if the folder is ready for processing, False otherwise.
+    """
+    return os.path.exists(os.path.join(folder_path, 'READY.txt'))
+
+
 
 if __name__ == '__main__':
 
@@ -299,13 +307,22 @@ if __name__ == '__main__':
     start_time = time.time()
     
     # We are going to run this analysis for three different fragmentation maps
+    
+    # The fine the Habitat and year this refer to tje folders
+    habitat = 'T1B'
+    year = 2000
+    dir_name = r'S:\Emmanuel_OcegueraConchas\fragmentation_maps_tiles_and_input\EUNIS'
+    
+    # We are going to run this analysis for three different fragmentation maps
     # Define the root path
-    root = r"S:\Emmanuel_OcegueraConchas\fragmentation_maps\EUNIS\00_version_100m"
-    folders = ["bfragmap_tiles_clumps_EUNIS", "bfragmap1_tiles_clumps_EUNIS", "bfragmap2_tiles_clumps_EUNIS"]
+    root = os.path.join(dir_name, habitat, str(year))
+    folders = ["bfragmap_tiles_clumps_EUNIS", 
+               "bfragmap1_tiles_clumps_EUNIS", 
+               "bfragmap2_tiles_clumps_EUNIS"]
     report = "report_unique_areas_and_units.ini"
 
     # Define the output folder names if not exist it will be created
-    root_output = r"S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS\00_version_100m"
+    root_output = os.path.join(r'S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS', habitat, str(year)) # Add here the Habitat 
     folder_outputs = [
         "base_fragmentation_map_EUNIS/bfragmap_meff_EUNIS", 
         "base_fragmentation_map1_EUNIS/bfragmap1_meff_EUNIS", 
@@ -313,9 +330,15 @@ if __name__ == '__main__':
     ]
     
     for folder, folder_output in zip(folders, folder_outputs):
-        
-        # Create the output folder if it does not exist
+        folder_path = os.path.join(root, folder)
         outpath = os.path.join(root_output, folder_output)
+        
+        # Wait for the folder to be ready
+        while not is_folder_ready_for_processing(folder_path):
+            print(f"Waiting for {folder} to be ready...")
+            time.sleep(1800) #30 min
+        
+        print(f"processing {folder}...")
         ensure_dir(outpath)
         tile_path = os.path.join(root, folder)
         report_path = os.path.join(root, folder, report)
@@ -333,21 +356,18 @@ if __name__ == '__main__':
         tiles = glob(tile_path + '//*.tif')
         sur_radius = 50
         
+        
         with open(log_file_path, 'w') as log, Pool(60) as pool:
             for bar in pool.imap_unordered(main, [(tile, tiles, df_report, outpath, sur_radius) for tile in tiles]):
                 log.write(bar + '\n')
                 log.flush()
-            
-        log.close() 
+        log.close()
         print(f"Fragmentation analysis for {folder} has been completed")
-
+    
     # End the time counter
     end_time = time.time() # End time
     elapsed_time = end_time - start_time
     print(f"Elapsed time: {elapsed_time}")
-
-        
-
 
 
 
