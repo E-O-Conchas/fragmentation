@@ -50,5 +50,3 @@ This document outlines the comprehensive workflow for a moving window fragmentat
 ## Conclusion
 This workflow provides a structured and detailed approach for analyzing forest fragmentation, utilizing a suite of scripts for comprehensive analysis.
 
-## Author
-- need to be fill it
