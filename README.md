@@ -5,10 +5,18 @@ This document outlines the comprehensive workflow for a moving window fragmentat
 
 
 ## Steps
+1. **Create the basemaps for the input in GRASS GIS using R: This code need to be provided by Nikolaj**
+
+2. **Clump analysis, create tiles and export them**
+   - Load Raster to GRASS GIS
+   	- [Import tiles to GRASS GIS](fragmentation/01.load_vrt_to_grass.py)
+
+   - Compute the clump analysis, create 1000m X 1000m tiles and export them in the defined folder  
+
 
 1. **Tile Raster Inside GRASS GIS, run Clumps analysis and Export**
    - Load Raster or VRR to GRASS GIS
-	 - [Import tiles to GRASS GIS](fragmentation/01.load_vrt_to_grass.py)
+	 
 
    - Run Clump Function on Full Raster
 	 - [Clumps Full Raster and Report in GRASS Script](https://github.com/E-O-Conchas/fragmentation/blob/main/6.clumps_full_raster_and_report_GRASS.py)
