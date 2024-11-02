@@ -4,7 +4,7 @@ Created on Sat Nov 11 12:39:02 2023
 
 @author: no67wuwu
 
-Description: This script performs fragmentation analysis on urban raster tiles.
+Description: This script performs fragmentation analysis.
              It calculates fragmentation indices based on the percentage of area 
              covered by each fragment and outputs the results as raster files.
 """
