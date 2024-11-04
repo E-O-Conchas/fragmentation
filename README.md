@@ -37,8 +37,7 @@ This document outlines the comprehensive workflow for a moving window fragmentat
 6. **Create VRT from the results **
    - [Generate VRT file with the fragmentation results](https://github.com/E-O-Conchas/fragmentation/blob/main/11.convert_result_to_vrt.py)
 
-## Source Data
-- need to be fill it
+
 
 ## Output Data
 - Raster files indicating the fragmentation index and other metrics.
