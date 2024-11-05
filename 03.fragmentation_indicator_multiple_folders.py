@@ -310,8 +310,8 @@ if __name__ == '__main__':
     
     # The fine the Habitat and year this refer to tje folders
     habitat = 'T1B'
-    year = 2000
-    dir_name = r'S:\Emmanuel_OcegueraConchas\fragmentation_maps_tiles_and_input\EUNIS'
+    year = 2018
+    dir_name = r'S:\user_name\fragmentation_maps_tiles_and_input\EUNIS'
     
     # We are going to run this analysis for three different fragmentation maps
     # Define the root path
@@ -322,7 +322,7 @@ if __name__ == '__main__':
     report = "report_unique_areas_and_units.ini"
 
     # Define the output folder names if not exist it will be created
-    root_output = os.path.join(r'S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS', habitat, str(year)) # Add here the Habitat 
+    root_output = os.path.join(r'S:\user_name\fragmentation_analysis\EUNIS', habitat, str(year)) # Add here the Habitat 
     folder_outputs = [
         "base_fragmentation_map_EUNIS/bfragmap_meff_EUNIS", 
         "base_fragmentation_map1_EUNIS/bfragmap1_meff_EUNIS", 
