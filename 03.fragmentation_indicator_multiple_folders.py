@@ -139,13 +139,13 @@ def get_tiles(tile, tiles):
     # Extract the base name pattern based on the folder
     if "bfragmap_tiles_clumps_EUNIS" in folder_name:
         base_name = "T1B_2000_bfragmap_clump"
-        print(base_name)
+        #print(base_name)
     elif "bfragmap1_tiles_clumps_EUNIS" in folder_name:
         base_name = "T1B_2000_bfragmap1_clump"
-        print(base_name)
+        #print(base_name)
     elif "bfragmap2_tiles_clumps_EUNIS" in folder_name:
         base_name = "T1B_2000_bfragmap2_clump"
-        print(base_name)
+        #print(base_name)
     else:
         raise ValueError("Unknown folder name pattern.")
     
@@ -336,7 +336,7 @@ if __name__ == '__main__':
         # Wait for the folder to be ready
         while not is_folder_ready_for_processing(folder_path):
             print(f"Waiting for {folder} to be ready...")
-            time.sleep(1800) #30 min
+            time.sleep(300) #5 min
         
         print(f"processing {folder}...")
         ensure_dir(outpath)
