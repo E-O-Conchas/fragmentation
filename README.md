@@ -1,5 +1,5 @@
-# Fragmentation Analysis Workflow
-
+# Fragmentation Analysis Workflow  <img align="right" width="15%" src="images/logo.jpeg"> 
+ 
 This document provides a step-by-step workflow for performing a moving window fragmentation analysis, using methods to efficiently process large spatial datasets.
 
 ## Steps
