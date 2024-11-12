@@ -1,41 +1,34 @@
 # Fragmentation Analysis Workflow
-## Need to be updated
-## Introduction
-This document outlines the comprehensive workflow for a moving window fragmentation analysis, incorporating methodologies to process spatial data effectively.
 
+This document provides a step-by-step workflow for performing a moving window fragmentation analysis, using methods to efficiently process large spatial datasets.
 
 ## Steps
-1. **Create the basemaps for the input in GRASS GIS using R: This code need to be provided by Nikolaj**
+1. **Generate Basemaps in GRASS GIS using R**
+   - The initial step involves creating basemaps in GRASS GIS as input for fragmentation analysis. 
+   - **Note:** Code for this step will be provided by Nikolaj.
 
-2. **Clump analysis, create tiles and export them**
-   - Load Raster to GRASS GIS
-   	- [Import tiles to GRASS GIS](fragmentation/01.load_vrt_to_grass.py)
+3. **Clump Analysis, Tiling, and Export**
 
-   - Compute the clump analysis, create 1000m X 1000m tiles and export them in the defined folder  
-
-
-1. **Tile Raster Inside GRASS GIS, run Clumps analysis and Export**
-   - Load Raster or VRR to GRASS GIS
-	 
-
-   - Run Clump Function on Full Raster
-	 - [Clumps Full Raster and Report in GRASS Script](https://github.com/E-O-Conchas/fragmentation/blob/main/6.clumps_full_raster_and_report_GRASS.py)
+   in this step, contiguous regions or "clumps" within the raster data are identified, tiled into manageable sections, and exported. These processes are essential for handling large spatial datasets and preparing them for fragmnetation analysis.
    
-   - Tile Raster and Export Files in GRASS GIS
-   - Before Export Tiles, create a Mask to export only forest polygons
-	 - [Create Tiles and Export Files in GRASS Script](https://github.com/E-O-Conchas/fragmentation/blob/main/7.create_tiles_and_export_files_GRASS.py)
+   - **Load Raster Data into GRASS GIS**
 
-3. **Delete Empty Tiles**
-   - [Delete Empty Tiles Script](https://github.com/E-O-Conchas/fragmentation/blob/main/8.delete_empty_tiles.py)
+      Raster data is imported into GRASS GIS to make it accessible for processing and analysis.
+     	- Refer to [Import tiles to GRASS GIS](https://github.com/E-O-Conchas/fragmentation/blob/7c56ac37c6174fcb428483b30376997a3fc678d7/01.load_vrt_to_grass.py) for the loading process.
 
-4. **Aggregate Rasters to 1km Resolution**
-   - [Aggregate Tiles 5m to 1k Script](https://github.com/E-O-Conchas/fragmentation/blob/main/9.tiles_to_1km_optimized.py)
+   - **Perform Clump Analysis and Generate Clump Reports**
+  
+     Clump analysis groups contiguous regions with similar values, assigning unique IDs to each "patch" within the landscape. This process is essential for fragmentation metrics, as it helps identify distinct areas within the raster. A report is generated detailing key metrics for each clump, such as area and distribution, which aids in understanding spatial fragmentation patterns.
 
-5. **Calculate Fragmentation Per Pixel with a Moving Window**
-   - [Calculate Fragmentation Index Script](https://github.com/E-O-Conchas/fragmentation/blob/main/10.fragmentation_indicatior_cal.py)
+   - **Create 1000m x 1000m Tiles**
+  
+     To enable parallel processing and facilitate handling of large datasets, the clump maps are divided into 1000m x 1000m tiles. This approach allows efficient processing by working with individual tiles.
+   
+   - **Export Tiles to GeoTIFF Format**  
 
-6. **Create VRT from the results **
-   - [Generate VRT file with the fragmentation results](https://github.com/E-O-Conchas/fragmentation/blob/main/11.convert_result_to_vrt.py)
+     Each tile is exported in GeoTIFF format, ensuring compatibility with various GIS platforms and enabling easy sharing and further analysis outside of GRASS GIS. Once all steps are complete, a `READY.txt` file is generated in the output folder to indicate that preprocessing is finished.
+   
+       - Refer to [Clump Analysis, Tiling, and Export](https://github.com/E-O-Conchas/fragmentation/blob/7c56ac37c6174fcb428483b30376997a3fc678d7/02.clumps_analysis_tiles_and_export.py) for the full script.
 
 
 
