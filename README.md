@@ -32,10 +32,4 @@ This document provides a step-by-step workflow for performing a moving window fr
 
 
 
-## Additional Notes
-- Ensure all software and libraries are correctly configured and installed.
-- Verify data integrity at each step.
-
-## Conclusion
-This workflow provides a structured and detailed approach for analyzing forest fragmentation, utilizing a suite of scripts for comprehensive analysis.
 
