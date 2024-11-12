@@ -32,9 +32,6 @@ This document provides a step-by-step workflow for performing a moving window fr
 
 
 
-## Output Data
-- Raster files indicating the fragmentation index and other metrics.
-
 ## Additional Notes
 - Ensure all software and libraries are correctly configured and installed.
 - Verify data integrity at each step.
