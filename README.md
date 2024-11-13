@@ -3,8 +3,8 @@
 This document provides a step-by-step workflow for performing a moving window fragmentation analysis, using methods to efficiently process large spatial datasets.
 
 ## Steps
-1. **Generate Basemaps in GRASS GIS using R**
-   - The initial step involves creating basemaps in GRASS GIS as input for fragmentation analysis. 
+1. **Generate input maps for GRASS GIS using R**
+   - The initial step involves creating basemaps with different fragmentation barriers as input for analysis. 
    - **Note:** Code for this step will be provided by Nikolaj.
 
 3. **Clump Analysis, Tiling, and Export**
