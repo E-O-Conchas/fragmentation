@@ -14,7 +14,7 @@ This document provides a step-by-step workflow for performing a moving window fr
    - **Load Raster Data into GRASS GIS**
 
       Raster data is imported into GRASS GIS to make it accessible for processing and analysis.
-     	- Refer to [Import tiles to GRASS GIS](https://github.com/E-O-Conchas/fragmentation/blob/7c56ac37c6174fcb428483b30376997a3fc678d7/01.load_vrt_to_grass.py) for the loading process.
+     	 - Refer to [Import Fragmentation maps to GRASS GIS](https://github.com/E-O-Conchas/fragmentation/blob/7c56ac37c6174fcb428483b30376997a3fc678d7/01.load_vrt_to_grass.py) for the loading process.
 
    - **Perform Clump Analysis and Generate Clump Reports**
   
@@ -51,7 +51,7 @@ This document provides a step-by-step workflow for performing a moving window fr
 4. **Merge Processed Tiles for Final Output**  
    Once all tiles are processed, they are merged into a single GeoTIFF file representing the entire study area, providing a comprehensive view of the fragmentation metrics across the landscape.
 
-     
+     - Refer to [Create VRT and Tiff](https://github.com/E-O-Conchas/fragmentation/blob/c235315ecab7790f5b52a7087b99be9d55a13fcf/04.convert_results_to_vrt_and_tiff.py)
 
 
 
