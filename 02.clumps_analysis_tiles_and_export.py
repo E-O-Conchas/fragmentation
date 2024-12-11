@@ -43,15 +43,13 @@ habitats = ["N51", "R31", "R34", "R42",
 
             "S42", "S93", "T13", "T22", 
 
-            "T27", "T34"] 
-
-
+            "T27", "T34"] 
 
 
 
 for habitat in habitats:
 
-    print(f"Processing habitat: {habitat}"
+    print(f"Processing habitat: {habitat}")
 
 
 
@@ -76,9 +74,7 @@ for habitat in habitats:
 
     frag_map_types = [
 
-        ('Frag2', 'bfragmap2_tiles_clumps_EUNIS'
-
-    ]
+        ('Frag2', 'bfragmap2_tiles_clumps_EUNIS')]
 
 
 
