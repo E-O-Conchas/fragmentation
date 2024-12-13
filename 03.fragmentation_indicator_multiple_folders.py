@@ -122,17 +122,19 @@ test = r"S:\Emmanuel_OcegueraConchas\fragmentation_maps_tiles_and_input\EUNIS\N2
 
 
 # Function to get surrounding tiles for a given tile
-def get_tiles(tile, tiles, habitat):   
-   """
+def get_tiles(tile, tiles, habitat, year):   
+    """
     Get surrounding tiles for a given tile.
 
     Parameters:
     tile (str): Path to the central tile.
     tiles (list): List of all tile paths.
     habitat (str): Habitat type (e.g., "N21", "R31").
+    year: (int): Year of the dataset (e.g. 2018, 2020...)
 
     Returns:
     numpy array: Combined array of the central tile and its surroundings.
+    
     """
     # check if the Tiles list is empty
     if not tiles:
@@ -140,11 +142,13 @@ def get_tiles(tile, tiles, habitat):
     
     name = os.path.basename(tile)
     folder_name = os.path.basename(os.path.dirname(tile))
-    habitat = name.split('_')[0]
     
+    # Construct the base name dinamically using habitat
+    base_name = f"{habitat}_{year}_{folder_name.split('_')[0]}_clump"
+    print(f"This is the base name: { base_name}" )
     
-    # name = tile.split(os.sep)[-1]
-    # folder_name = tile.split(os.sep)[-2]
+    name = test.split(os.sep)[-1]
+    folder_name = test.split(os.sep)[-2]
     
     # # Extract the base name pattern based on the folder
     # if "bfragmap_tiles_clumps_EUNIS" in folder_name:
@@ -240,7 +244,7 @@ def ensure_dir(directory):
 
 # Main function to process each tile
 def main(args):
-    tile, tiles, df_report, outpath, sur_radius = args
+    tile, tiles, df_report, outpath, sur_radius, habitat, year = args
     """
     Process a tile to calculate fragmentation indices and write output rasters.
     
@@ -250,7 +254,7 @@ def main(args):
     Returns:
     str: Confirmation message.
     """
-    raster = get_tiles(tile, tiles)
+    raster = get_tiles(tile, tiles, habitat, year)
     #print(f"Unique values in raster for tile {tile}: {np.unique(raster)}")
     orig_raster = read_tif(tile)
     out_count_area = np.zeros(orig_raster.shape)
@@ -383,7 +387,7 @@ if __name__ == '__main__':
             
             
             with open(log_file_path, 'w') as log, Pool(60) as pool:
-                for bar in pool.imap_unordered(main, [(tile, tiles, df_report, outpath, sur_radius) for tile in tiles]):
+                for bar in pool.imap_unordered(main, [(tile, tiles, df_report, outpath, sur_radius, habitat, year) for tile in tiles]):
                     log.write(bar + '\n')
                     log.flush()
             log.close()
