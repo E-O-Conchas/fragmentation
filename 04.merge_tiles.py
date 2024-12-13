@@ -103,7 +103,7 @@ for habitat in habitats:
             print("No tiles found.")
             continue
 
-        print(f"Found {len(tiles)} tiles to merge."
+        print(f"Found {len(tiles)} tiles to merge.")
         map_type = meff_folder
         merged_file_name = f"{habitat}_{map_type}_merged.tif"
         # Define the output path for the merged file
