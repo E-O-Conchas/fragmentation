@@ -8,45 +8,49 @@ library(here)
 
 here(root)
 
-root <- "S:\\Emmanuel_OcegueraConchas\\fragmentation_analysis"
+root <- "S:\\Emmanuel_OcegueraConchas\\fragmentation_analysis\\EUNIS"
+eu_mask <- "I:/biocon/Emmanuel_Oceguera/projects/Fragmentation_analysis/data/eu_mask_single.shp"
 
-list <- c(base = "base_fragmnetation_map",
-          map_1 = 1,
-          map_2 = 2)
+# Define the habitats
+habitats <- c("N51", "R31", "R34", "R42", "R57", "S31",
+              "S38", "S41", "S42", "S93", "T13", "T22", "T27", "T34")
 
+# Define the year
+year <- 2018
 
+# Define  te map types
+map_types <- c("base_fragmentation_map_EUNIS",
+               "base_fragmentation_map1_EUNIS",
+               "base_fragmentation_map2_EUNIS")
 
-list[[1]]
-
-for ( m in list ){
-  print(m)
-  
-}
-
-# Create the link to the data 
-
-
-path <- file.path(here(root, base))
-
-
-
-# Output VRT file path
-vrt_path = "S:\\Emmanuel_OcegueraConchas\\fragmentation_analysis\\EUNIS\\00_version_100m\\base_fragmentation_map2_EUNIS\\bfragmap2_meff_EUNIS\\window_count3.vrt"
-eu_mask = "I:/biocon/Emmanuel_Oceguera/projects/Fragmentation_analysis/data/eu_mask_single.shp"
-
-# Read the mask
+# read the mask
 eu_mask <- terra::vect(eu_mask)
 
-# Read raster
-raster <- terra::rast(vrt_path)
-plot(raster)
+# Loop over the habitats and the map types
 
-# mask raster
-raster_masked <- terra::mask(raster, eu_mask)
+for (habitat in habitats) {
+  for (map_type in map_types[3]) {
+    # Define the path where the data is stored
+    folder <- file.path(root, habitat, map_type)
+    # we list the unique raster file in the folder
+    raster_file <- list.files(folder, pattern = ".tif$", full.names = TRUE)
+    
+    # Read the raster
+    message("Processing: ", raster_file)
+    raster <- terra::rast(raster_file)
 
-# Plot it
-plot(raster_masked)
+    # Mask te raster using the EU mask
+    raster_masked <- terra::mask(raster, eu_mask)
 
-# Write the raster
-output_name <- "S:\\Emmanuel_OcegueraConchas\\fragmentation_analysis\\EUNIS\\00_version_100m\\base_fragmentation_map2_EUNIS\\tiff\\bfragmap2_meff_eunis_masked.tif"
-terra::writeRaster(raster_masked, output_name,overwrite = F, gdal=c("COMPRESS=NONE", "TFW=YES"), datatype='INT1U')
+    # Define the output path
+    output_folder <- file.path(folder)
+    output_name <- file.path(output_folder, paste0("masked_", basename(raster_file)))
+    # write the raster
+    terra::writeRaster(raster_masked, output_name,overwrite = F, gdal=c("COMPRESS=NONE", "TFW=YES"), datatype='INT1U')
+
+    message("Masked raster saved in: ", output_name)
+
+  }
+}
+
+message("All done")
