@@ -85,6 +85,7 @@ for habitat in habitats:
 
         # Define the input path for tiles
         input_path = os.path.join(base_dir, habitat, str(year), map_folder, meff_folder, window_count_folder)
+        print(input_path)
         tiles = glob.glob(os.path.join(input_path, "*.tif"))
 
         if not tiles:
