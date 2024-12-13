@@ -25,10 +25,21 @@ def merge_tiles(tiles, output_path):
         print("No tiles to merge.")
         return
     
-    # Open all tile files
-    tile_datasets = [rasterio.open(tile) for tile in tiles]
+    # Open all tile files with error handling
+    tile_datasets = []
+    for tile in tiles:
+        try:
+            tile_datasets.append(rasterio.open(tile))
+        except Exception as e:
+            print(f"Error opening {tile}: {e}")
+            continue
+    
+    if not tile_datasets:
+        print("No valid tiles to merge.")
+        return
     
     # Merge the tiles
+    print(f"Merging {len(tile_datasets)} tiles...")
     mosaic, transform = merge(tile_datasets)
     
     # Get the metadata of the first tile to set for the output file
@@ -85,19 +96,21 @@ for habitat in habitats:
 
         # Define the input path for tiles
         input_path = os.path.join(base_dir, habitat, str(year), map_folder, meff_folder, window_count_folder)
-        print(input_path)
+        print(f"Input path: {input_path}")
         tiles = glob.glob(os.path.join(input_path, "*.tif"))
 
         if not tiles:
             print("No tiles found.")
             continue
-        
+
+        print(f"Found {len(tiles)} tiles to merge."
         map_type = meff_folder
         merged_file_name = f"{habitat}_{map_type}_merged.tif"
         # Define the output path for the merged file
         output_folder = os.path.join(base_dir, habitat, str(year), map_folder)
         output_path = os.path.join(output_folder, merged_file_name)
-        print(output_path)
+        
+        print(f"Output path: {output_path}")
         merge_tiles(tiles, output_path)
 
 print("All tiles for all selected habitats and years have been merged.")
