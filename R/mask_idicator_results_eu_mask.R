@@ -2,12 +2,10 @@
 rm(list = ls())
 gc()
 
-
+# Import the libraries
 library(terra)
-library(here)
 
-here(root)
-
+# Define the root folder
 root <- "S:\\Emmanuel_OcegueraConchas\\fragmentation_analysis\\EUNIS"
 eu_mask <- "I:/biocon/Emmanuel_Oceguera/projects/Fragmentation_analysis/data/eu_mask_single.shp"
 
@@ -27,9 +25,8 @@ map_types <- c("base_fragmentation_map_EUNIS",
 eu_mask <- terra::vect(eu_mask)
 
 # Loop over the habitats and the map types
-
 for (habitat in habitats) {
-  for (map_type in map_types[3]) {
+  for (map_type in map_types[3]) { # only the base fragmentation map 2
     # Define the path where the data is stored
     folder <- file.path(root, habitat, map_type)
     # we list the unique raster file in the folder
