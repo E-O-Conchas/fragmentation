@@ -55,9 +55,7 @@ def merge_tiles(tiles, output_path):
 
     print(f"Merged file saved as: {output_path}")
 
-##############################################################################
-####### Run the merge_tiles function for each habitat and year ###############
-##############################################################################
+### Run the merge_tiles function for each habitat and year ###
 
 # Define the directory name
 base_dir = r'S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS'
@@ -104,15 +102,15 @@ for habitat in habitats:
 print("All tiles for all selected habitats and years have been merged.")
 
 
-### Test the merge_tiles function
-r"S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS\R51\2018\base_fragmentation_map_EUNIS\bfragmap_meff_EUNIS\window_count3"
-out_path = r"S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS\R51\2018\base_fragmentation_map_EUNIS\bfragmap_meff_EUNIS"
-# List all .tif files in the folder
-tiles = glob.glob(os.path.join(path, "*.tif"))
-# Define the output file path for the merged file
-merged_output_file = os.path.join(out_path, "bfragmap_meff_eunis.tif")
-# Call merge_tiles to merge the tiles
-merge_tiles(tiles, merged_output_file)
+# ### Test the merge_tiles function
+# r"S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS\R51\2018\base_fragmentation_map_EUNIS\bfragmap_meff_EUNIS\window_count3"
+# out_path = r"S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS\R51\2018\base_fragmentation_map_EUNIS\bfragmap_meff_EUNIS"
+# # List all .tif files in the folder
+# tiles = glob.glob(os.path.join(path, "*.tif"))
+# # Define the output file path for the merged file
+# merged_output_file = os.path.join(out_path, "bfragmap_meff_eunis.tif")
+# # Call merge_tiles to merge the tiles
+# merge_tiles(tiles, merged_output_file)
 
 
 
