@@ -11,7 +11,9 @@ eu_mask <- "I:/biocon/Emmanuel_Oceguera/projects/Fragmentation_analysis/data/eu_
 # 
 # Define the habitats
 habitats <- c("R42", "R57", "S31",
-              "S38", "S41", "S42", "S93", "T13", "T22", "T27", "T34")
+              "S38", "S41", "S42", 
+              "S93", "T13", "T22", 
+              "T27", "T34")
 
 # habitats <- c("R34")
 
