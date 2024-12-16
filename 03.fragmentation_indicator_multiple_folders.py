@@ -117,8 +117,28 @@ def write_tif(file_with_srid, full_output_name, data, dtype=1, nodata=None, opti
         print(f"Unexpected error: {e}")
 
 
-# Test
-test = r"S:\Emmanuel_OcegueraConchas\fragmentation_maps_tiles_and_input\EUNIS\N21\2018\bfragmap2_tiles_clumps_EUNIS\N21_2018_bfragmap2_clump-000-000.tif"
+# # Test
+# tile = r"S:\Emmanuel_OcegueraConchas\fragmentation_maps_tiles_and_input\EUNIS\N21\2018\bfragmap2_tiles_clumps_EUNIS\N21_2018_bfragmap2_clump-044-031.tif"
+
+
+# name = os.path.basename(tile)
+# folder_name = os.path.basename(os.path.dirname(tile))
+
+# # Construct the base name dinamically using habitat
+# base_name = f"{habitat}_{year}_{folder_name.split('_')[0]}_clump"
+# print(f"This is the base name: { base_name}" )
+
+# y_top = int(name.split('-')[1]) - 1
+# y_bot = y_top + 2
+# x_left = int(name.split('-')[2].split('.')[0]) - 1
+# x_right = x_left + 2
+
+# # Generate list of surrounding tiles with consistent 3-digit padding
+# sur_tiles = [f"{base_name}-{y:03d}-{x:03d}.tif"
+#               for y in range(y_top, y_bot + 1)  
+#               for x in range(x_left, x_right + 1)]
+
+
 
 
 # Function to get surrounding tiles for a given tile
@@ -141,14 +161,13 @@ def get_tiles(tile, tiles, habitat, year):
         raise ValueError('No tiles found')
     
     name = os.path.basename(tile)
+    print(f"this is the full tiff name: {name}")
     folder_name = os.path.basename(os.path.dirname(tile))
     
     # Construct the base name dinamically using habitat
     base_name = f"{habitat}_{year}_{folder_name.split('_')[0]}_clump"
     print(f"This is the base name: { base_name}" )
     
-    name = test.split(os.sep)[-1]
-    folder_name = test.split(os.sep)[-2]
     
     # # Extract the base name pattern based on the folder
     # if "bfragmap_tiles_clumps_EUNIS" in folder_name:
@@ -324,11 +343,13 @@ if __name__ == '__main__':
     # And for different habitats
 
     # Define the habitats 
-    habitats = [ "N51", "R31", "R34", "R42", 
+    habitats = ["R31", "R34", "R42", 
                 "R57", "S31", "S38", "S41", 
                 "S42", "S93", "T13", "T22", 
                 "T27", "T34"]
 
+    #habitats = [ "N21"] # Make a test
+    
     # Define the yer
     year = 2018
 
