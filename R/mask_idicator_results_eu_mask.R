@@ -46,7 +46,7 @@ for (habitat in habitats) {
     # Create output directory if it doesn't exist
     if (!dir.exists(output_folder)) dir.create(output_folder)
     
-    output_name <- file.path(output_folder, paste0(sub('\\..*$', '', basename(raster_file)),'_Eu27.tiff'))
+    output_name <- file.path(output_folder, paste0(sub('\\..*$', '', basename(raster_file)),'_EU27.tiff'))
     print(output_name)
     # write the raster
     terra::writeRaster(raster_masked, output_name,overwrite = F, gdal=c("COMPRESS=NONE", "TFW=YES"), datatype='INT1U')
