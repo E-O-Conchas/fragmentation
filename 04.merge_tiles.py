@@ -70,17 +70,28 @@ def merge_tiles(tiles, output_path):
 
 # Define the directory name
 base_dir = r'S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS'
-# Define the habitats 
-habitats = [ "N51", "R31", "R34", "R42", 
-            "R57", "S31", "S38", "S41", 
-            "S42", "S93", "T13", "T22", 
-            "T27", "T34"]
+# # Define the habitats 
+# habitats = [ "N51", "R31", "R34", "R42", 
+#             "R57", "S31", "S38", "S41", 
+#             "S42", "S93", "T13", "T22", 
+#             "T27", "T34"]
+
+# We do a test with the habitat N51
+habitats = ["N51"]
+
+
 # Define the year
 year = 2018
 
+# # Define all fragmentation maps and corresponding meff folders
+# map_folders = [
+#     ("base_fragmentation_map2_EUNIS", "bfragmap2_meff_EUNIS"),]
+
 # Define all fragmentation maps and corresponding meff folders
 map_folders = [
-    ("base_fragmentation_map2_EUNIS", "bfragmap2_meff_EUNIS"),]
+    ("base_fragmentation_map_EUNIS", "bfragmap_meff_EUNIS"),]
+
+
 
 # ("base_fragmentation_map_EUNIS", "bfragmap_meff_EUNIS"),
 #     ("base_fragmentation_map1_EUNIS", "bfragmap1_meff_EUNIS"),
