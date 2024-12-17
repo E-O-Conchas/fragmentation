@@ -51,7 +51,7 @@ This document provides a step-by-step workflow for performing a moving window fr
 4. **Merge Processed Tiles for Final Output**  
    Once all tiles are processed, they are merged into a single GeoTIFF file representing the entire study area, providing a comprehensive view of the fragmentation metrics across the landscape.
 
-     - Refer to [Create VRT and Tiff](https://github.com/E-O-Conchas/fragmentation/blob/c235315ecab7790f5b52a7087b99be9d55a13fcf/04.convert_results_to_vrt_and_tiff.py)
+     - Refer to [Create VRT and Tiff](https://github.com/E-O-Conchas/fragmentation/blob/aa726f4eb0c4c4a165754f4f3b1a2e3d3743cb79/04.convert_results_to_vrt_and_tiff.py)
 
 
 
