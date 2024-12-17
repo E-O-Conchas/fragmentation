@@ -5,9 +5,12 @@ gc()
 # Import the libraries
 library(terra)
 
+## Before running check the paths and the names of the files ##
+###############################################################
+
 # Define the root folder
-root <- "S:\\Emmanuel_OcegueraConchas\\fragmentation_analysis\\EUNIS"
-eu_mask <- "I:/biocon/Emmanuel_Oceguera/projects/Fragmentation_analysis/data/eu_mask_single.shp"
+root <- "S:\\User_name\\fragmentation_analysis\\EUNIS"
+eu_mask <- "I:/biocon/User_name/projects/Fragmentation_analysis/data/eu_mask_single.shp"
 # 
 # Define the habitats
 habitats <- c("R42", "R57", "S31",
@@ -30,6 +33,7 @@ eu_mask <- terra::vect(eu_mask)
 
 # Loop over the habitats and the map types
 for (habitat in habitats) {
+  cat("Processing habitat: ", habitat, "\n")
   for (map_type in map_types[3]) { # only the base fragmentation map 2 this time
     # Define the path where the data is stored
     folder <- file.path(root, habitat,year, map_type)
@@ -37,7 +41,7 @@ for (habitat in habitats) {
     raster_file <- list.files(folder, pattern = '.tif$', full.names = TRUE)
     print(raster_file)
     # Read the raster
-    message("Processing: ", raster_file)
+    cat("Processing: ", raster_file, "\n")
     raster <- terra::rast(raster_file)
 
     # Mask te raster using the EU mask
@@ -49,11 +53,11 @@ for (habitat in habitats) {
     if (!dir.exists(output_folder)) dir.create(output_folder)
     
     output_name <- file.path(output_folder, paste0(sub('\\..*$', '', basename(raster_file)),'_EU27.tiff'))
-    print(output_name)
+    cat("Output file: ", output_name, "\n")	
     # write the raster
     terra::writeRaster(raster_masked, output_name,overwrite = F, gdal=c("COMPRESS=NONE", "TFW=YES"), datatype='INT1U')
 
-    message("Masked raster saved in: ", output_name)
+    cat("Done\n")
 
   }
 }
