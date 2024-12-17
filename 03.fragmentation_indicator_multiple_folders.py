@@ -116,31 +116,6 @@ def write_tif(file_with_srid, full_output_name, data, dtype=1, nodata=None, opti
     except Exception as e:
         print(f"Unexpected error: {e}")
 
-
-# # Test
-# tile = r"S:\Emmanuel_OcegueraConchas\fragmentation_maps_tiles_and_input\EUNIS\N21\2018\bfragmap2_tiles_clumps_EUNIS\N21_2018_bfragmap2_clump-044-031.tif"
-
-
-# name = os.path.basename(tile)
-# folder_name = os.path.basename(os.path.dirname(tile))
-
-# # Construct the base name dinamically using habitat
-# base_name = f"{habitat}_{year}_{folder_name.split('_')[0]}_clump"
-# print(f"This is the base name: { base_name}" )
-
-# y_top = int(name.split('-')[1]) - 1
-# y_bot = y_top + 2
-# x_left = int(name.split('-')[2].split('.')[0]) - 1
-# x_right = x_left + 2
-
-# # Generate list of surrounding tiles with consistent 3-digit padding
-# sur_tiles = [f"{base_name}-{y:03d}-{x:03d}.tif"
-#               for y in range(y_top, y_bot + 1)  
-#               for x in range(x_left, x_right + 1)]
-
-
-
-
 # Function to get surrounding tiles for a given tile
 def get_tiles(tile, tiles, habitat, year):   
     """
@@ -161,12 +136,12 @@ def get_tiles(tile, tiles, habitat, year):
         raise ValueError('No tiles found')
     
     name = os.path.basename(tile)
-    print(f"this is the full tiff name: {name}")
+    # print(f"this is the full tiff name: {name}")
     folder_name = os.path.basename(os.path.dirname(tile))
     
     # Construct the base name dinamically using habitat
     base_name = f"{habitat}_{year}_{folder_name.split('_')[0]}_clump"
-    print(f"This is the base name: { base_name}" )
+    # print(f"This is the base name: { base_name}" )
     
     
     # # Extract the base name pattern based on the folder
@@ -192,17 +167,6 @@ def get_tiles(tile, tiles, habitat, year):
     sur_tiles = [f"{base_name}-{y:03d}-{x:03d}.tif"
                   for y in range(y_top, y_bot + 1)  
                   for x in range(x_left, x_right + 1)]
-   
-    
-    # # Generate list of surrounding tiles
-    # sur_tiles = [f'{base_name}-{"000" + str(y)[-3:]}-{"000" + str(x)[-3:]}.tif'
-    #               for y in range(y_top, y_bot + 1)  
-    #               for x in range(x_left, x_right + 1)]
-    
-    
-    # sur_tiles = [f'base_name-{}-{}.tif'.format(('000' + str(y))[-3:], ('000' + str(x))[-3:]) # Always change the name of tiles
-    #               for y in range(y_top, y_bot + 1)  
-    #               for x in range(x_left, x_right + 1)]
      
     # Map each tile to its position in the combined array
     pos_dic_tiles = {}
@@ -257,6 +221,12 @@ def bbox(x, y, sur_radius):
 
 # Function to create directories if they don't exist
 def ensure_dir(directory):
+    """
+    Ensure that the directory exists.
+
+    Parameters:
+    directory (str): Path to the directory.
+    """
     if not os.path.exists(directory):
         os.makedirs(directory)
 
