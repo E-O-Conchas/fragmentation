@@ -1,0 +1,49 @@
+/*
+ *
+ * This document contains general comments and notes related to the Fragmentation analysis project.
+ * It includes information about the final output naming convention and a section of code related to the get_tiles function.
+ * The get_tiles function generates a list of surrounding tiles based on specified coordinates.
+ * The commented-out code snippets show different methods for generating the list of surrounding tiles.
+ */
+
+################################
+# Fragmentation analysis
+# Final output naming convention:
+# {Habitat_type}_{year}_{fragmentation_level}_meff_eunis_EU27.tif -> Masked output for each habitat
+# Example: "R51_2018_bgrafmap2_meff_eunis_EU17.tif"
+
+################################
+# The following lines correspond to the get_tiles function. These lines have been improved, but we will keep them in case 
+# something in the code changes.
+
+# # Generate list of surrounding tiles using formatted strings
+# sur_tiles = [f'{base_name}-{"000" + str(y)[-3:]}-{"000" + str(x)[-3:]}.tif'
+#               for y in range(y_top, y_bot + 1)  
+#               for x in range(x_left, x_right + 1)]
+
+# # Generate list of surrounding tiles using the format method
+# sur_tiles = [f'base_name-{}-{}.tif'.format(('000' + str(y))[-3:], ('000' + str(x))[-3:]) # Always change the name of tiles
+#               for y in range(y_top, y_bot + 1)  
+#               for x in range(x_left, x_right + 1)]
+#
+################################
+# The following lines test the generation of surrounding tile names to detect any issues: 
+# tile =r"S:\usr_name\fragmentation_maps_tiles_and_input\EUNIS\N21\2018\bfragmap2_tiles_clumps_EUNIS\N21_2018_bfragmap2_clump-044-031.tif"
+
+# name = os.path.basename(tile)
+# folder_name = os.path.basename(os.path.dirname(tile))
+
+# # Construct the base name dinamically using habitat
+# base_name = f"{habitat}_{year}_{folder_name.split('_')[0]}_clump"
+# print(f"This is the base name: { base_name}" )
+
+# y_top = int(name.split('-')[1]) - 1
+# y_bot = y_top + 2
+# x_left = int(name.split('-')[2].split('.')[0]) - 1
+# x_right = x_left + 2
+
+# # Generate list of surrounding tiles with consistent 3-digit padding
+# sur_tiles = [f"{base_name}-{y:03d}-{x:03d}.tif"
+#               for y in range(y_top, y_bot + 1)  
+#               for x in range(x_left, x_right + 1)]
+#
