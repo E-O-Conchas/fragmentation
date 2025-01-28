@@ -14,7 +14,7 @@ eu_mask <- "I:/biocon/Emmanuel_Oceguera/projects/Fragmentation_analysis/data/eu_
 
 # Define the years to process
 years <- c(2000, 2006, 2012, 2018)  # Adjust this list based on available years
-years <- c(2006)
+
 # Read the EU mask
 eu_mask <- terra::vect(eu_mask)
 #plot(eu_mask)
