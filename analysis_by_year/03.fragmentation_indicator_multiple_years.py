@@ -317,7 +317,7 @@ if __name__ == '__main__':
     base_path = r"I:\biocon\Emmanuel_Oceguera\projects\WildE_magali\fragmentation\output"
     base_output_path = r"I:\biocon\Emmanuel_Oceguera\projects\WildE_magali\fragmentation\output"
 
-    for year in years[0:1]:
+    for year in years[1:4]:
         input_folder = os.path.join(base_path, year, "tiles")
         output_folder = os.path.join(base_output_path, year, "meff_calculation")
         report_file = os.path.join(input_folder,"report_unique_areas_and_units.ini")
