@@ -4,7 +4,7 @@ Created on Sat Nov 11 12:39:02 2023
 
 @author: no67wuwu
 
-Description: This script performs fragmentation analysis.
+Description: This script performs fragmentation analysis by multiple years.
              It calculates fragmentation indices based on the percentage of area 
              covered by each fragment and outputs the results as raster files.
 """
@@ -302,8 +302,6 @@ def main(args):
     #write_tif(tile, outraster_orig_area, out_orig_area, 1)
     
     return 'tile: {} written'.format(tile.split(os.sep)[-1])
-
-
 
 
 if __name__ == '__main__':
