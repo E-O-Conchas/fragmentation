@@ -13,7 +13,7 @@ root <- "I:\\biocon\\Emmanuel_Oceguera\\projects\\WildE_magali\\fragmentation\\o
 eu_mask <- "I:/biocon/Emmanuel_Oceguera/projects/Fragmentation_analysis/data/eu_mask_single.shp"
 
 # Define the years to process
-years <- c(2000, 2006, 2012, 2018)  # Adjust this list based on available years
+years <- c(2000, 2006,2012, 2018)  # Adjust this list based on available years
 
 # Read the EU mask
 eu_mask <- terra::vect(eu_mask)
