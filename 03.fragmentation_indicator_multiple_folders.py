@@ -142,7 +142,8 @@ def get_tiles(tile, tiles, habitat, year):
     # Construct the base name dinamically using habitat
     base_name = f"{habitat}_{year}_{folder_name.split('_')[0]}_clump"
     # print(f"This is the base name: { base_name}" )
-    
+    # example of a base name:
+    # R42_2018_bfragmap2_clump-000-002.tif
     
     # # Extract the base name pattern based on the folder
     # if "bfragmap_tiles_clumps_EUNIS" in folder_name:
@@ -312,20 +313,26 @@ if __name__ == '__main__':
     # We are going to run this analysis for three different fragmentation maps
     # And for different habitats
 
-    # Define the habitats 
-    habitats = ["R31", "R34", "R42", 
-                "R57", "S31", "S38", "S41", 
-                "S42", "S93", "T13", "T22", 
-                "T27", "T34"]
+    # Define the habitats to be processed
+    # Habitats that have beedn done already
+    # R31, R34, R42, R51, R57
+    habitats = [
+    "R11", "R12", "R13", "R14", "R15", "R16", "R17", "R18", "R19", "R1A", "R1B", "R1C",
+    "R1D", "R1E", "R1F", "R1G", "R1H", "R1J", "R1K", "R1L", "R1M", "R1N", "R1P", "R1Q",
+    "R1R", "R1S", "R21", "R22", "R23", "R24", "R32", "R33", "R35", "R36", "R37", "R41", 
+    "R43", "R44", "R45", "R52", "R53", "R54", "R55", "R56", "R61", "R62", "R63", "R64", 
+    "R65", "R73"]
 
     #habitats = [ "N21"] # Make a test
     
     # Define the yer
     year = 2018
-
+    # Define the habitat level
+    habitat_level_3 = 'R'
+    # Loop over the habitats
     for habitat in habitats:
         dir_name = r'S:\Emmanuel_OcegueraConchas\fragmentation_maps_tiles_and_input\EUNIS'
-        root = os.path.join(dir_name, habitat, str(year))
+        root = os.path.join(dir_name, habitat_level_3, habitat, str(year))
         print(root)
         
         # folders = ["bfragmap_tiles_clumps_EUNIS", 
@@ -337,7 +344,7 @@ if __name__ == '__main__':
         report = "report_unique_areas_and_units.ini"
 
         # Define the output folder names if not exist it will be created
-        root_output = os.path.join(r'S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS', habitat, str(year))
+        root_output = os.path.join(r'S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS', habitat_level_3, habitat, str(year))
         print(root_output)
         
     
