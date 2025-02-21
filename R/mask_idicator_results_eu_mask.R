@@ -8,18 +8,19 @@ library(terra)
 ## Before running check the paths and the names of the files ##
 ###############################################################
 
+# Set the tem dir to avoid large use of ram memory
+terraOptions(memmax = 1, todisk=TRUE, tempdir = "E:\\Emmanuel\\fragmentation\\tem")
+
 # Define the root folder
-root <- "S:\\User_name\\fragmentation_analysis\\EUNIS"
-eu_mask <- "I:/biocon/User_name/projects/Fragmentation_analysis/data/eu_mask_single.shp"
-# 
+root <- "S:\\user_name\\fragmentation_analysis\\EUNIS\\R"
+eu_mask <- "I:/biocon/user_name/projects/Fragmentation_analysis/data/eu_mask_single.shp"
+
 # Define the habitats
-habitats <- c("R42", "R57", "S31",
-              "S38", "S41", "S42", 
-              "S93", "T13", "T22", 
-              "T27", "T34")
-
-# habitats <- c("R34")
-
+habitats <- c("R12", "R13", "R14", "R15", "R16", "R17", "R18", "R19", "R1A", "R1B", "R1C",
+              "R1D", "R1E", "R1F", "R1G", "R1H", "R1J", "R1K", "R1L", "R1M", "R1N", "R1P", "R1Q",
+              "R1R", "R1S", "R21", "R22", "R23", "R24", "R32", "R33", "R35", "R36", "R37", "R41", 
+              "R43", "R44", "R45", "R52", "R53", "R54", "R55", "R56", "R61", "R62", "R63", "R64", 
+              "R65", "R73")
 # Define the year
 year <- 2018
 
@@ -39,9 +40,9 @@ for (habitat in habitats) {
     folder <- file.path(root, habitat,year, map_type)
     # we list the unique raster file in the folder
     raster_file <- list.files(folder, pattern = '.tif$', full.names = TRUE)
-    print(raster_file)
+    #print(raster_file)
     # Read the raster
-    cat("Processing: ", raster_file, "\n")
+    cat("Processing: ", basename(raster_file), "\n")
     raster <- terra::rast(raster_file)
 
     # Mask te raster using the EU mask
@@ -53,12 +54,10 @@ for (habitat in habitats) {
     if (!dir.exists(output_folder)) dir.create(output_folder)
     
     output_name <- file.path(output_folder, paste0(sub('\\..*$', '', basename(raster_file)),'_EU27.tiff'))
-    cat("Output file: ", output_name, "\n")	
+    cat("Output file: ", basename(output_name), "\n")	
     # write the raster
     terra::writeRaster(raster_masked, output_name,overwrite = F, gdal=c("COMPRESS=NONE", "TFW=YES"), datatype='INT1U')
-
-    cat("Done\n")
-
+    cat("Raster saved................:)\n")
   }
 }
 
