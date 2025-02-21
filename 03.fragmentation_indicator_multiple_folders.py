@@ -331,7 +331,7 @@ if __name__ == '__main__':
     habitat_level_3 = 'R'
     # Loop over the habitats
     for habitat in habitats:
-        dir_name = r'S:\Emmanuel_OcegueraConchas\fragmentation_maps_tiles_and_input\EUNIS'
+        dir_name = r'S:\user_name\fragmentation_maps_tiles_and_input\EUNIS'
         root = os.path.join(dir_name, habitat_level_3, habitat, str(year))
         print(root)
         
@@ -344,10 +344,8 @@ if __name__ == '__main__':
         report = "report_unique_areas_and_units.ini"
 
         # Define the output folder names if not exist it will be created
-        root_output = os.path.join(r'S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS', habitat_level_3, habitat, str(year))
-        print(root_output)
+        root_output = os.path.join(r'S:\user_name\fragmentation_analysis\EUNIS', habitat_level_3, habitat, str(year))
         
-    
         # folder_outputs = [
         #     "base_fragmentation_map_EUNIS/bfragmap_meff_EUNIS", 
         #     "base_fragmentation_map1_EUNIS/bfragmap1_meff_EUNIS", 
@@ -395,7 +393,11 @@ if __name__ == '__main__':
     end_time = time.time() # End time
     elapsed_time = end_time - start_time
     print(f"Elapsed time: {elapsed_time}")
-
+    # calculated time in hours: 17.773467040194405
+    # The process took 17 hours to finish all the R habitats for the year 2018
+    # It should be noticed that the time calculates the waiting time for the folders to be ready
+    # So this time is for the full proccess of the fragmentation analysis, incluiding the clumping and
+    # the tilin and exporting the tiles from GRASS GIS
 
 
 

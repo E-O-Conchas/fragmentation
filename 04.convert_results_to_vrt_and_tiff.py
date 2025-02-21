@@ -14,19 +14,23 @@ from osgeo import gdal
 import os
 
 # Base directory
-base_dir = r"S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS"
+base_dir = r"S:\Emmanuel_OcegueraConchas\fragmentation_analysis\EUNIS\R"
 
-# Define the habitats 
-habitats = ["R34", "R42", 
-            "R57", "S31", "S38", "S41", 
-            "S42", "S93", "T13", "T22", 
-            "T27", "T34"]
+
+# Habitats that have beedn done already
+# R31, R34, R42, R51, R57
+habitats = [
+"R11", "R12", "R13", "R14", "R15", "R16", "R17", "R18", "R19", "R1A", "R1B", "R1C",
+"R1D", "R1E", "R1F", "R1G", "R1H", "R1J", "R1K", "R1L", "R1M", "R1N", "R1P", "R1Q",
+"R1R", "R1S", "R21", "R22", "R23", "R24", "R32", "R33", "R35", "R36", "R37", "R41", 
+"R43", "R44", "R45", "R52", "R53", "R54", "R55", "R56", "R61", "R62", "R63", "R64", 
+"R65", "R73"]
 
 # Define the year
 year = 2018
 
 # Loop over habitats
-for habitat in habitats:
+for habitat in habitats[0:1]:
     print(f"Processing habitat: {habitat}")
     
     # Define input directory and output paths
@@ -35,10 +39,6 @@ for habitat in habitats:
                              "bfragmap2_meff_EUNIS", 
                              "window_count3")
                              
-    vrt_path = os.path.join(base_dir, habitat, str(year), 
-                            "base_fragmentation_map2_EUNIS", 
-                            "bfragmap2_meff_EUNIS", 
-                            "window_count3.vrt")
                             
     tif_path = os.path.join(base_dir, habitat, str(year), 
                             "base_fragmentation_map2_EUNIS", 
@@ -59,20 +59,17 @@ for habitat in habitats:
     
     print(f"Found {len(tiff_files)} TIFF files for {habitat}.")
     
-    # Create VRT
-    vrt = gdal.BuildVRT(vrt_path, tiff_files)
-    vrt = None  # Save and close the VRT file
-    
-    print(f"VRT file created for {habitat} at: {vrt_path}")
+    # Create VRT temorary
+    vrt = gdal.BuildVRT('', tiff_files)
     
     # Define arguments for GeoTIFF creation
     kwargs = {
         'format': 'GTiff',
-        'outputType': gdal.GDT_UInt16
+        'outputType': gdal.GDT_UInt16 # Maybe find anothre type it fit tou our data and take less space? 
     }
     
     # Convert VRT to GeoTIFF
-    gdal.Translate(tif_path, vrt_path, **kwargs)
+    gdal.Translate(tif_path, vrt, **kwargs)
     
     print(f"GeoTIFF file created for {habitat} at: {tif_path}")
 
