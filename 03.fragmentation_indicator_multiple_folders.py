@@ -137,10 +137,12 @@ def get_tiles(tile, tiles, habitat, year):
     
     name = os.path.basename(tile)
     # print(f"this is the full tiff name: {name}")
-    folder_name = os.path.basename(os.path.dirname(tile))
+    # folder_name = os.path.basename(os.path.dirname(tile))
     
     # Construct the base name dinamically using habitat
-    base_name = f"{habitat}_{year}_{folder_name.split('_')[0]}_clump"
+    # base_name = f"{habitat}_{year}_{folder_name.split('_')[0]}_clump"
+    base_name = f"{habitat}_{year}_clump_tile"
+
     # print(f"This is the base name: { base_name}" )
     # example of a base name:
     # R42_2018_bfragmap2_clump-000-002.tif
@@ -231,7 +233,6 @@ def ensure_dir(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-
 # Main function to process each tile
 def main(args):
     tile, tiles, df_report, outpath, sur_radius, habitat, year = args
@@ -310,89 +311,65 @@ if __name__ == '__main__':
     # Start the time counter
     start_time = time.time()
     
-    # We are going to run this analysis for three different fragmentation maps
-    # And for different habitats
+    year = 2012
+    habitats_groups = ['N', 'Q', 'R', 'S', 'T', 'U', 'V']
+    sur_radius = 50
+    base_input_root = r"S:\Emmanuel_OcegueraConchas\fragmentation_maps_tiles_and_input\Input_layers\EUNIS_tiles"
+    base_output_root = r"D:\Emmanuel_Oceguera\Fragmentation_analysis\output\EUNIS" 
 
-    # Define the habitats to be processed
-    # Habitats that have beedn done already
-    # R31, R34, R42, R51, R57
-    habitats = [
-    "R11", "R12", "R13", "R14", "R15", "R16", "R17", "R18", "R19", "R1A", "R1B", "R1C",
-    "R1D", "R1E", "R1F", "R1G", "R1H", "R1J", "R1K", "R1L", "R1M", "R1N", "R1P", "R1Q",
-    "R1R", "R1S", "R21", "R22", "R23", "R24", "R32", "R33", "R35", "R36", "R37", "R41", 
-    "R43", "R44", "R45", "R52", "R53", "R54", "R55", "R56", "R61", "R62", "R63", "R64", 
-    "R65", "R73"]
+    # Loop over the groups of habitats
+    # take only the first element of the list for this time 15.05.2025
+    for group in habitats_groups[0:1]: # This time we are going to process only the first group
+        print(f"Processing group: {group}")
+        group_folder = os.path.join(base_input_root, str(year), group)
+        habitats = os.listdir(group_folder)
 
-    #habitats = [ "N21"] # Make a test
-    
-    # Define the yer
-    year = 2018
-    # Define the habitat level
-    habitat_level_3 = 'R'
-    # Loop over the habitats
-    for habitat in habitats:
-        dir_name = r'S:\user_name\fragmentation_maps_tiles_and_input\EUNIS'
-        root = os.path.join(dir_name, habitat_level_3, habitat, str(year))
-        print(root)
-        
-        # folders = ["bfragmap_tiles_clumps_EUNIS", 
-        #         "bfragmap1_tiles_clumps_EUNIS", 
-        #         "bfragmap2_tiles_clumps_EUNIS"]
-        
-        folders = ["bfragmap2_tiles_clumps_EUNIS"] # For this run we are going to use only the bfragmap2 folder
-
-        report = "report_unique_areas_and_units.ini"
-
-        # Define the output folder names if not exist it will be created
-        root_output = os.path.join(r'S:\user_name\fragmentation_analysis\EUNIS', habitat_level_3, habitat, str(year))
-        
-        # folder_outputs = [
-        #     "base_fragmentation_map_EUNIS/bfragmap_meff_EUNIS", 
-        #     "base_fragmentation_map1_EUNIS/bfragmap1_meff_EUNIS", 
-        #     "base_fragmentation_map2_EUNIS/bfragmap2_meff_EUNIS"]
-        
-        folder_outputs = ["base_fragmentation_map2_EUNIS/bfragmap2_meff_EUNIS"] # For this run we are going to use only the bfragmap2 folder
-        
-        for folder, folder_output in zip(folders, folder_outputs):
-            folder_path = os.path.join(root, folder)
-            print(f"This is the folder to be ready to process: {folder_path}")
-            outpath = os.path.join(root_output, folder_output)
-            print(f"This is the output folder: {outpath}")
-            # Wait for the folder to be ready
-            while not is_folder_ready_for_processing(folder_path):
-                print(f"Waiting for {folder} to be ready...")
-                time.sleep(300) #5 min
-            
-            print(f"processing {folder}...")
-            ensure_dir(outpath)
-            tile_path = os.path.join(root, folder)
-            report_path = os.path.join(root, folder, report)
-            log_file_path = os.path.join(outpath, 'frag_ind_pct.log')
+        for habitat_code in habitats:
+            if habitat_code == 'N11':
+                continue
+            print (f"Processing habitat: {habitat_code}")
+            tile_input_path = os.path.join(group_folder, habitat_code)
+            if not is_folder_ready_for_processing(tile_input_path):
+                print(f"Waiting for {habitat_code} to be ready...")
+                while not is_folder_ready_for_processing(tile_input_path):
+                    time.sleep(150) # 2.5 min
+                    
+            print(f"folder {habitat_code} is ready. Starting the process...")
+            output_path = os.path.join(base_output_root, str(year), group, habitat_code)
+            ensure_dir(output_path)
+       
+            report_path = os.path.join(tile_input_path, "report_unique_areas_and_units.ini")
+            log_file_path = os.path.join(output_path, 'frag_ind_pct.log')          
             
             # Read the report file and process the data
-            df_report = pd.read_csv(report_path, sep='|', skiprows=15, skipfooter=3, 
-                                    names=['a', 'frag_id', 'b', 'area', 'c'], thousands=',', engine='python')
+            df_report = pd.read_csv(
+                report_path, sep='|', skiprows=15, skipfooter=3,
+                names=['a', 'frag_id', 'b', 'area', 'c'], 
+                thousands=',', engine='python'
+            )
             
             df_report = df_report.loc[:, ['frag_id', 'area']]
             print("The report data frame has benn created")
             
             # Set the log file path for this folder
             # Get list of tiles to process
-            tiles = glob(tile_path + '//*.tif')
-            sur_radius = 50
-            
+            # tiles = glob(tile_input_path + '//*.tif')
+            tiles = glob(os.path.join(tile_input_path, "*.tif"))           
             
             with open(log_file_path, 'w') as log, Pool(60) as pool:
-                for bar in pool.imap_unordered(main, [(tile, tiles, df_report, outpath, sur_radius, habitat, year) for tile in tiles]):
+                args = [(tile, tiles, df_report, output_path, sur_radius, habitat_code, year) for tile in tiles]
+                for bar in pool.imap_unordered(main, args):
                     log.write(bar + '\n')
                     log.flush()
             log.close()
-            print(f"Fragmentation analysis for {folder} has been completed")
+            print(f"Fragmentation analysis for {habitat_code} has been completed")
         
     # End the time counter
     end_time = time.time() # End time
     elapsed_time = end_time - start_time
-    print(f"Elapsed time: {elapsed_time}")
+    print(f"Elapsed time: {elapsed_time/3600:.2f} hours")
+
+
     # calculated time in hours: 17.773467040194405
     # The process took 17 hours to finish all the R habitats for the year 2018
     # It should be noticed that the time calculates the waiting time for the folders to be ready
