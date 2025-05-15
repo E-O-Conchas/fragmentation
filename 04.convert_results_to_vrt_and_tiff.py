@@ -36,7 +36,8 @@ for group in habitats_groups[0:1]:
         print(f"Group folder does not exist: {group_dir}")
         continue
     
-    for habitat in os.listdir(group_dir):
+    for i, habitat in enumerate(sorted(os.listdir(group_dir)), 1):
+        print(f"[{i}/{len(os.listdir(group_dir))}] Processing habitat: {habitat}"
         habitat_dir = os.path.join(group_dir, habitat, "window_count3")
         if not os.path.exists(group_dir):
             continue
