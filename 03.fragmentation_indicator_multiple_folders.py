@@ -15,6 +15,7 @@ import pandas as pd
 from glob import glob
 import rasterio
 from multiprocessing import Pool
+from osgeo import gdal
 
 # Fragmentation function to calculate the fragmentation index as a percentage
 def frag_ind(s, sur_radius):
@@ -304,6 +305,42 @@ def is_folder_ready_for_processing(folder_path):
     """
     return os.path.exists(os.path.join(folder_path, 'READY.txt'))
 
+# funtion to create a mosaic of all tiles
+def mosaic_tiles(output_path, habitat_code, year, subfolder="window_count3"):
+    """
+    Create a mosaicked GeoTIFF from all tile TIFFs in the given subfolder.
+    
+    Parameters:
+    output_path (str): The path to the habitat output folder.
+    habitat_code (str): The habitat code (e.g., Q21).
+    year (int): Year of the dataset.
+    subfolder (str): Subfolder where the tiles are stored (default: window_count3).
+    """
+    tile_dir = os.path.join(output_path, subfolder)
+    if not os.path.exists(tile_dir):
+        print(f"[Mosaic] No folder found for habitat: {habitat_code}")
+        return
+
+    tiff_tiles = [os.path.join(tile_dir, f) for f in os.listdir(tile_dir) if f.endswith(".tif")]
+    if not tiff_tiles:
+        print(f"[Mosaic] No TIFF tiles found for: {habitat_code}")
+        return
+    
+    print(f"[Mosaic] Creating mosaic for {habitat_code} with {len(tiff_tiles)} tiles.")
+    
+    vrt = gdal.BuildVRT('', tiff_tiles)
+    mosaic_output = os.path.join(output_path, f"{habitat_code}_{year}_mosaic.tiff")
+    
+    gdal.Translate(
+        mosaic_output,
+        vrt,
+        format='GTiff',
+        outputType=gdal.GDT_UInt16,
+        creationOptions=['COMPRESS=DEFLATE']
+    )
+    
+    print(f"[Mosaic] Mosaic created for {habitat_code} at {mosaic_output}")
+
 
 
 if __name__ == '__main__':
@@ -319,14 +356,14 @@ if __name__ == '__main__':
 
     # Loop over the groups of habitats
     # take only the first element of the list for this time 15.05.2025
-    for group in habitats_groups[0:1]: # This time we are going to process only the first group
+    for group in habitats_groups[1:]: # This time we are going to process only the first group
         print(f"Processing group: {group}")
         group_folder = os.path.join(base_input_root, str(year), group)
         habitats = os.listdir(group_folder)
 
         for habitat_code in habitats:
-            if habitat_code == 'N11':
-                continue
+            # if habitat_code != 'Q63': # Skip the rest of the habitats
+            #     continue
             print (f"Processing habitat: {habitat_code}")
             tile_input_path = os.path.join(group_folder, habitat_code)
             if not is_folder_ready_for_processing(tile_input_path):
@@ -363,7 +400,10 @@ if __name__ == '__main__':
                     log.flush()
             log.close()
             print(f"Fragmentation analysis for {habitat_code} has been completed")
-        
+
+            # Add the mosaic function to create a mosaic of all tiles
+            mosaic_tiles(output_path, habitat_code, year)
+            print(f"Mosaic for {habitat_code} has been created")
     # End the time counter
     end_time = time.time() # End time
     elapsed_time = end_time - start_time
