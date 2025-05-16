@@ -326,7 +326,7 @@ def mosaic_tiles(output_path, habitat_code, year, subfolder="window_count3"):
         print(f"[Mosaic] No TIFF tiles found for: {habitat_code}")
         return
     
-    print(f"[Mosaic] Creating mosaic for {habitat_code} with {len(tiff_tiles)} tiles.")
+    print(f"[Mosaic] Creating mosaic for {habitat_code} with {len(tiff_tiles)} tiles...")
     
     vrt = gdal.BuildVRT('', tiff_tiles)
     mosaic_output = os.path.join(output_path, f"{habitat_code}_{year}_mosaic.tiff")
@@ -339,8 +339,7 @@ def mosaic_tiles(output_path, habitat_code, year, subfolder="window_count3"):
         creationOptions=['COMPRESS=DEFLATE']
     )
     
-    print(f"[Mosaic] Mosaic created for {habitat_code} at {mosaic_output}")
-
+    print(f"[Mosaic] Mosaic created for {habitat_code} at {mosaic_output} !!")
 
 
 if __name__ == '__main__':
@@ -356,7 +355,7 @@ if __name__ == '__main__':
 
     # Loop over the groups of habitats
     # take only the first element of the list for this time 15.05.2025
-    for group in habitats_groups[1:]: # This time we are going to process only the first group
+    for group in habitats_groups[2:]: # This time we are going to process only the first group
         print(f"Processing group: {group}")
         group_folder = os.path.join(base_input_root, str(year), group)
         habitats = os.listdir(group_folder)
